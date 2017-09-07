@@ -6,12 +6,26 @@ var app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('*', (req, res, next) => {
-  console.log(new Date().toUTCString())
+  console.log('Request at: ' + new Date().toUTCString())
   next()
 })
 
 app.get('/:dateTime', (req, res, next) => {
-  res.send('Something: ' + JSON.stringify(req.body))
+  var dateTime = Date.parse(req.params.dateTime)
+  var data = {
+    unix: null,
+    natural: null
+  }
+
+  if (typeof dateTime === 'number') {
+    data.unix = dateTime
+    data.natural = new Date(dateTime).toUTCString()
+  } else {
+    dateTime = new Date(req.params.dateTime)
+    data.unix = dateTime.getTime()
+    data.natural = dateTime.toUTCString()
+  }
+  res.send(data)
 })
 
 app.use('*', function (req, res) {
