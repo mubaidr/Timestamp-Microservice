@@ -6,24 +6,31 @@ var app = express()
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('*', (req, res, next) => {
-  console.log('Request at: ' + new Date().toUTCString())
-  next()
+  if (req.originalUrl === '/favicon.ico') {
+    res.status(204).end();
+  } else {
+    console.log('Request at: ' + new Date().toUTCString())
+    next();
+  }
 })
 
 app.get('/:dateTime', (req, res, next) => {
-  var dateTime = Date.parse(req.params.dateTime)
+  var input = parseInt(req.params.dateTime)
   var data = {
     unix: null,
     natural: null
   }
+  var dateTime
 
-  if (typeof dateTime === 'number') {
-    data.unix = dateTime
-    data.natural = new Date(dateTime).toUTCString()
-  } else {
-    dateTime = new Date(req.params.dateTime)
-    data.unix = dateTime.getTime()
-    data.natural = dateTime.toUTCString()
+  if (isNaN(input)) {
+    input = req.params.dateTime
+  }
+
+  dateTime = new Date(input)
+
+  data = {
+    unix: dateTime.getTime(),
+    natural: dateTime.toUTCString()
   }
   res.send(data)
 })
