@@ -2,6 +2,7 @@ var express = require('express')
 var path = require('path')
 
 var app = express()
+var port = process.env.PORT || 9000
 
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('*', (req, res, next) => {
@@ -38,4 +39,4 @@ app.use('*', function (req, res) {
   res.end('NOT IMPLEMENTED: 404!')
 })
 
-app.listen(9000)
+app.listen(port)
