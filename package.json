@@ -4,13 +4,13 @@
   "description": "Freecode camp time stamp service project",
   "private": true,
   "scripts": {
-    "start": "node app"
+    "start": "node app/index.js",
+    "dev": "nodemon app/index.js"
   },
   "dependencies": {
-    "body-parser": "~1.17.1",
     "express": "~4.15.2"
   },
-  "devdependencies": {
+  "devDependencies": {
     "eslint": "^4.4.1",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.9.0",
